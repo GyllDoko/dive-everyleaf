@@ -20,7 +20,7 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
         # Transition vers la page de liste des tâches
         visit tasks_path
         
-        binding.irb
+        
         current_path
         Task.count
         page.html
