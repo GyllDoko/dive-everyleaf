@@ -1,21 +1,27 @@
 require 'rails_helper'
 
-RSpec.describe Task, type: :model do
-  describe 'バリデーションのtest' do
+describe 'Task', type: :model do
+  describe 'Task Model test' do
     context 'Si le Title la tâche est vide' do
-      it "C'est difficile à Validation" do
-        task = Task.new(title: '', content: '失敗test')
+      it "C'est difficile à Validé" do
+        task = Task.new(name: '', content: 'content test')
         expect(task).not_to be_valid
       end
     end
-　　context 'Si les détails de la tâche sont vides' do
-      it 'Validation est intercepté' do
-        # Écrivez du contenu ici
+  end
+  describe "Task Model test" do
+    context "Si les détails de la tâche sont vides" do
+      it "validation interceptés" do
+        
       end
     end
-    context 'Si le Title et les détails de la tâche sont décrits' do
-      it 'Validation passes' do
-        # Écrivez du contenu ici
+  end
+  describe "Task model Test" do
+    context "sile titre et les détails sont décrits" do
+      it "validation passes" do
+        
       end
     end
+  end
+
 end

@@ -19,6 +19,12 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
         task = FactoryBot.create(:task, name: 'task')
         # Transition vers la page de liste des tâches
         visit tasks_path
+        
+        binding.irb
+        current_path
+        Task.count
+        page.html
+      
         # Le texte "tâche" apparaît sur la page visitée (avec transition) (page de liste des tâches)
         # attendre (confirmer / attendre) si have_content est inclus ou non (inclus)
         expect(page).to have_content 'task'
