@@ -5,7 +5,7 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
     FactoryBot.create(:task)
     FactoryBot.create(:second_task)
   end
- 
+
   describe "Nouvelle fonction de création" do
     context "Lors de la création d'une nouvelle tâche" do
       it "La tâche créée s'affiche" do
@@ -22,7 +22,7 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
         current_path
         Task.count
         page.html
-      
+
         # Le texte "tâche" apparaît sur la page visitée (avec transition) (page de liste des tâches)
         # attendre (confirmer / attendre) si have_content est inclus ou non (inclus)
         expect(page).to have_content 'task'
@@ -30,12 +30,15 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
       end
     end
     context 'When tasks are arranged in descending order of deadline date and time' do
-      it 'Task with higher deadline is displayed at the top' do
-        date = DateTime.now.to_date
-        task4 = FactoryBot.create(:task, name: 'task4', expiry_date: date + 2.day)
-        task5 = FactoryBot.create(:task, name: 'task5', expiry_date: date + 1.day)
-        visit tasks_path()
-        assert Task.all.order("expiry_date desc")
+      it 'Task with higher deadline is displayed at the top' do  
+        
+        Task.order_by_created_at
+        visit tasks_path
+        task_list = all(".task_row")
+        
+        expect(task_list[0]).to have_content "title"
+        expect(task_list[-1]).to have_content "title2"
+
       end
     end
   end
