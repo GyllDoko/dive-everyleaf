@@ -1,13 +1,40 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Tasks</h1>
+<h1>General Tasks List</h1>
 
-<table>
+<div class="row py-3">
+  <div class="col sm-3">
+    <div class="col">
+      
+      <%= form_with(url: search_tasks_path, method: :get, local: true) do |f| %>
+      <% if defined? @search_title %>
+        <%= f.text_field :search_title, value: @search_title ,class:'label mx-3',style:'height:40px;width:200px'%>
+      <% else %>
+        <%= f.text_field :search_title %>
+      <% end %>
+        <%= f.select :search_status, Task.statuses.map { |k, v| [k, v] }, class: 'search_status form-control', prompt: 'status'%>
+        <%= f.select :search_priority, Task.priorities.map { |k, v| [k, v] }, class: 'search_priority form-control', prompt: 'priority'%>
+        <%= f.submit 'search' ,class:'btn btn-light'%>
+
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= link_to "sort by end deadline", tasks_path(sort_expired: "true") ,class: 'col btn btn-secondary text-light'%>
+  <%= link_to "sort by priority", tasks_path(sort_by_priority: "true") ,class: 'col btn btn-secondary text-light'%>
+
+<%= link_to 'New Task', new_task_path, class: "btn btn-primary" %>
+
+<table class="table">
   <thead>
     <tr>
       <th>Name</th>
       <th>Content</th>
-      <th colspan="3"></th>
+      <th>Deadline </th>
+      <th>Created At</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th colspan="1"></th>
     </tr>
   </thead>
 
@@ -16,14 +43,19 @@
       <tr>
         <td class="task_row"><%= task.name %></td>
         <td><%= task.content %></td>
-        <td><%= link_to 'Show', task %></td>
-        <td><%= link_to 'Edit', edit_task_path(task) %></td>
-        <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= task.expiry_date %></td>
+        <td><%= task.created_at %></td>
+        <td><%= task.status %></td>
+        <td><%= task.priority %></td>
+        <td><%= link_to 'Show', task , class: 'btn btn-outline-primary'%> 
+          <%= link_to 'Edit', edit_task_path(task), class: 'btn btn-outline-success' %>
+          <%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+<%= paginate @tasks %>
 
 <br>
 
-<%= link_to 'New Task', new_task_path %>
