@@ -3,10 +3,15 @@ class UsersController < ApplicationController
   skip_before_action :login_required, only: [ :new, :create]
   
   def show
+    if current_user != @user
+      redirect_to tasks_path
+    else
+    @tasks = @user.tasks.all.page(params[:page]).per(2)
+    end
   end
 
   def new
-    @user = User.new
+   @user = User.new
   end
 
   def edit
@@ -17,7 +22,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: "User was successfully created." }
+        session[:user_id] = @user.id
+        format.html { redirect_to tasks_path, notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -29,7 +35,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: "User was successfully updated." }
+        format.html { redirect_to @user, notice: "Changed user information" }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -54,4 +60,5 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation, :image, :image_cache)
   end
+ 
 end

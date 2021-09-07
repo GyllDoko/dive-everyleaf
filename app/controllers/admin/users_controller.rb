@@ -1,23 +1,27 @@
 class Admin::UsersController < ApplicationController
     before_action :set_user, only: %i[ show edit update destroy ]
     skip_before_action :login_required, only: [ :new, :create]
-    before_action :is_admin, only: [:edit, :update, :show, :destory]
+    before_action :is_admin, only: [:update, :show, :destory]
 
     def is_admin
        redirect_to admin_users_path if current_user.is_admin==true
-       redirect_to new_session_path
        
     end
 
     def index
-        @users = User.all
+        @users = User.all.where.not(id: current_user.id)
     end
     
     def show
+        redirect_to tasks_path, notice: 'acces denied!' if current_user.is_admin != true
+        
     end
   
     def new
-      @user = User.new
+      if current_user != nil
+        @user = User.new
+      
+      end
     end
   
     def edit
@@ -38,9 +42,10 @@ class Admin::UsersController < ApplicationController
     end
   
     def update
+      p "''''''''upadajbffkffff'''''''''''''"
       respond_to do |format|
         if @user.update(user_params)
-          format.html { redirect_to @user, notice: "User was successfully updated." }
+          format.html { redirect_to @user, notice: "Changed user information" }
           format.json { render :show, status: :ok, location: @user }
         else
           format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +57,7 @@ class Admin::UsersController < ApplicationController
     def destroy
       @user.destroy
       respond_to do |format|
-        format.html { redirect_to users_url, notice: "User was successfully destroyed." }
+        format.html { redirect_to admin_users_url, notice: "User was successfully destroyed." }
         format.json { head :no_content }
       end
     end
@@ -63,7 +68,7 @@ class Admin::UsersController < ApplicationController
     end
   
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation, :image, :image_cache)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
     
 end
