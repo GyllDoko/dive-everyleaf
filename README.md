@@ -35,7 +35,7 @@
 
 ### Heroku deployment
 
--[ ] heroku create 
+[ ] heroku create 
 -[ ] rails assets:precompile RAILS_ENV=Production 
 -[ ] git add 
 -[ ] git commit -m "message" 
