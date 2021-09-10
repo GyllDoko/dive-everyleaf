@@ -1,4 +1,6 @@
-<%= form_with(model: [:admin, user], local: true) do |form| %> <% if
+
+<%= form_with(model: [:admin, user], local: true) do |form| %>
+<% if
 user.errors.any? %>
 <div id="error_explanation">
   <h2>

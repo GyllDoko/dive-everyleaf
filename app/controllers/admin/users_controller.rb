@@ -20,8 +20,8 @@ class Admin::UsersController < ApplicationController
     def new
       if current_user != nil
         @user = User.new
-      
       end
+      @user = User.new
     end
   
     def edit
