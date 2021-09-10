@@ -32,3 +32,13 @@
 | --------- | ----------- |
 | task_id   | foreign_key |
 | ticket_id | foreign_key |
+
+### Heroku deployment
+
+- [ ] heroku create 
+- [ ] rails assets:precompile RAILS_ENV=Production 
+- [ ] git add 
+- [ ] git commit -m "message" 
+- [ ] git push heroku main 
+- [ ] heroku run rails db:migrate 
+- [ ] heroku open
