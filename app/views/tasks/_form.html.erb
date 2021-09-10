@@ -32,6 +32,11 @@
     <%= form.label :expiry_date %>
     <%= form.datetime_select :expiry_date %>
   </div>
+  <h3>Label</h3>
+ 
+  <%= form.select(:label, Label.all.collect {|p| [ p.name, p.id ] },{},
+  { :multiple => true, :size => 10 }) %>
+   
 
   <div class="actions">
     <%= form.submit %>

@@ -19,4 +19,6 @@ class Task < ApplicationRecord
         High: 2
     }
     belongs_to :user
+    has_many :labels
+    
 end

@@ -28,7 +28,7 @@ class TasksController < ApplicationController
     @task = current_user.tasks.build(task_params)
     @task.status=params[:task][:status]  
     @task.priority=params[:task][:priority]
-   
+    
     respond_to do |format|
       if @task.save
         format.html { redirect_to @task, notice: "Task was successfully created." }
