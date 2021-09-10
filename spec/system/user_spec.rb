@@ -18,14 +18,13 @@ RSpec.describe 'User registration / login / logout function', type: :system do
   describe 'User registration test' do
     context 'No user data and no login' do
       it 'Test of new user registration' do
-        visit new_user_path 
-           
+        visit new_admin_user_path 
         fill_in 'user[name]', with: 'sample'
         fill_in 'user[email]', with: 'user@example.com'
         fill_in 'user[password]', with: '22222222'
         fill_in 'user[password_confirmation]', with: '22222222'
         click_on "Signup"
-        expect(page).to have_content 'User was successfully created.'
+        expect(page).to have_content 'Tasks'
       end
       it 'A test that jumps to the login screen when you are not logged in' do
         visit tasks_path
@@ -79,14 +78,14 @@ RSpec.describe 'User registration / login / logout function', type: :system do
         user_login        
         click_on "Manage"
         sleep 2
-        expect(page).to have_content 'acces denied!'
+        expect(page).to have_content 'only the administrator can access it'
       end
     end
 
     context 'You are logged in as an administrator' do
       before do
         admin_user_login
-        click_link 'Manage'
+        click_on 'Manage'
       end 
 
       it 'Administrators should be able to access the manage screen' do
@@ -94,13 +93,14 @@ RSpec.describe 'User registration / login / logout function', type: :system do
       end
 
       it 'Administrators can register new users' do
-        click_link 'New User'
-
+        sleep 3
+        click_on 'New User'
+        sleep 3
         fill_in 'user[name]', with: 'test'
         fill_in 'user[email]', with: 'test@example.com'
         fill_in 'user[password]', with: '00000000'
         fill_in 'user[password_confirmation]', with: '00000000'
-        click_button "Signup"
+        click_on "Signup"
 
         visit admin_users_path
         expect(page).to have_content 'test'

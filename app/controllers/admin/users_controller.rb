@@ -13,15 +13,18 @@ class Admin::UsersController < ApplicationController
     end
     
     def show
-        redirect_to tasks_path, notice: 'acces denied!' if current_user.is_admin != true
+        redirect_to tasks_path, notice: 'only the administrator can access it' if current_user.is_admin != true
         
     end
   
     def new
-      if current_user != nil
+      if current_user&.is_admin 
         @user = User.new
+      elsif current_user ==nil
+        @user = User.new
+      else
+        redirect_to tasks_path
       end
-      @user = User.new
     end
   
     def edit
@@ -29,10 +32,13 @@ class Admin::UsersController < ApplicationController
   
     def create
       @user = User.new(user_params)
-  
+      
       respond_to do |format|
         if @user.save
-          format.html { redirect_to admin_users_path, notice: "User was successfully created." }
+          if current_user == nil 
+            session[:user_id] = @user.id
+          end
+          format.html { redirect_to tasks_path, notice: "User was successfully created." }
           format.json { render :show, status: :created, location: @user }
         else
           format.html { render :new, status: :unprocessable_entity }
@@ -42,7 +48,7 @@ class Admin::UsersController < ApplicationController
     end
   
     def update
-      p "''''''''upadajbffkffff'''''''''''''"
+      raise
       respond_to do |format|
         if @user.update(user_params)
           format.html { redirect_to @user, notice: "Changed user information" }
@@ -68,7 +74,7 @@ class Admin::UsersController < ApplicationController
     end
   
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :is_admin)
     end
     
 end

@@ -30,6 +30,12 @@ user.errors.any? %>
   <%= form.label :password_confirmation %> <%=
   form.password_field:password_confirmation , class: "form-control"%>
 </div>
+<%if current_user and current_user.is_admin%>
+<div class="field my-2">
+  <%= form.label "make admin"%>
+  <%= form.check_box :is_admin %>
+</div>
+<%end%>
 
 <% if action_name == "edit" %>
 <div class="actions" style="float: right"><%= form.submit "Update" %></div>
