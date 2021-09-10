@@ -3,9 +3,13 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
+
     @tasks = Task.all.page(params[:page]).per(2)
     @tasks = Task.all.order_by_deadline.page(params[:page]).per(2) if params[:sort_expired] == "true"
     @tasks = Task.all.order_by_priority_button.page(params[:page]).per(2) if params[:sort_by_priority] == "true"
+
+
+    @tasks = Task.all.order("created_at desc")
 
   end
 
