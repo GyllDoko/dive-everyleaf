@@ -1,5 +1,7 @@
 {
   "name": "everleaf",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "bootstrap": "^5.1.0"
+  }
 }
