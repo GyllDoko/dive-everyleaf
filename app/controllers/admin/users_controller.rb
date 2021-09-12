@@ -1,12 +1,12 @@
 class Admin::UsersController < ApplicationController
     before_action :set_user, only: %i[ show edit update destroy ]
     skip_before_action :login_required, only: [ :new, :create]
-    before_action :is_admin, only: [:update, :show, :destory]
+    # before_action :is_admin, only: [:update, :show, :destory]
 
-    def is_admin
-       redirect_to admin_users_path if current_user.is_admin==true
+    # def is_admin
+    #    redirect_to admin_users_path if current_user.is_admin==true
        
-    end
+    # end
 
     def index
         @users = User.all.where.not(id: current_user.id)
@@ -48,7 +48,7 @@ class Admin::UsersController < ApplicationController
     end
   
     def update
-      raise
+      
       respond_to do |format|
         if @user.update(user_params)
           format.html { redirect_to @user, notice: "Changed user information" }

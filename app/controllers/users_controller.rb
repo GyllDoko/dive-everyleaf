@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
   skip_before_action :login_required, only: [ :new, :create]
-  
+  def index 
+    @users = User.all
+  end
   def show
     if current_user != @user
       redirect_to tasks_path
@@ -11,7 +13,13 @@ class UsersController < ApplicationController
   end
 
   def new
-   @user = User.new
+    if current_user&.is_admin 
+      @user = User.new
+    elsif current_user ==nil
+      @user = User.new
+    else
+      redirect_to tasks_path
+    end
   end
 
   def edit
@@ -57,7 +65,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :image, :image_cache)
+    params.require(:user).permit(:email, :password, :password_confirmation, :is_admin)
   end
  
 end
