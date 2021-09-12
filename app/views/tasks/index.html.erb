@@ -14,6 +14,7 @@
       <% end %>
         <%= f.select :search_status, Task.statuses.map { |k, v| [k, v] }, class: 'search_status form-control', prompt: 'status'%>
         <%= f.select :search_priority, Task.priorities.map { |k, v| [k, v] }, class: 'search_priority form-control', prompt: 'priority'%>
+        <%= f.select :search_label, Label.all.map { |k| [k.name, k.id] }, class: 'search_label form-control', prompt: 'label'%>
         <%= f.submit 'search' ,class:'btn btn-light'%>
 
       <% end %>
