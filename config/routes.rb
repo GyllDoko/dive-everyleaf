@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :tasks
   # patch "/admin/users/:id", to: "admin/users#update", as: "admin_users"
   resources :sessions, only: [:new, :create, :destroy]
-  resources :users, only: [:new, :show, :create]
+  resources :users
   namespace :admin do
     resources :users
   end
