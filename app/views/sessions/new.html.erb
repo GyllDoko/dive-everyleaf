@@ -1,0 +1,10 @@
+<h1 class="text-center">Login form</h1>
+
+<%= form_with(scope: :session, url: sessions_path, local: true) do |f| %> <%=
+f.label :email, "email", class: "mb-2"%> <%=f.email_field :email , class:
+"form-control mb-3"%> <%= f.label :password, "password", class: "mt-2"%> <%=
+f.password_field :password, class: "form-control mb-3"%>
+<div class="text-center mt-4">
+  <%=f.submit "signin", disable_with: 'Submiting...', class: "px-5"%>
+</div>
+<% end %>
