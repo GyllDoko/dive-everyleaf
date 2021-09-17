@@ -10,7 +10,7 @@ class TasksController < ApplicationController
     @tasks = current_user.tasks.all.order_by_deadline.page(params[:page]).per(5) if params[:sort_expired] == "true"
     @tasks = current_user.tasks.all.order_by_priority_button.page(params[:page]).per(5) if params[:sort_by_priority] == "true"
 
-    @tasks = Task.all.order("created_at desc")
+    @tasks = current_user.tasks.all.order("created_at desc")
     @labels = Label.where(user_id: nil).or(Label.where(user_id: current_user.id))
 
   end

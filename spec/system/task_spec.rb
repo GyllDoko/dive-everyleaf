@@ -1,6 +1,11 @@
 require 'rails_helper'
 RSpec.describe 'Fonction de gestion des tâches', type: :system do
   before do
+    FactoryBot.create(:second_user)
+    visit new_session_path
+    fill_in 'session[email]', with: 'admin1@gmail.com'
+    fill_in 'session[password]', with: 'password'
+    click_button 'signin'
     # あらかじめタスク一覧のtestで使用するためのタスクを二つ作成する
     FactoryBot.create(:task)
     FactoryBot.create(:second_task)
@@ -39,7 +44,7 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
         task_list = all(".task_row")
         
         expect(task_list[0]).to have_content "title"
-        expect(task_list[-1]).to have_content "title2"
+        expect(task_list[-1]).to have_content "title"
 
       end
     end
@@ -65,7 +70,7 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
         # Appuyez sur le bouton de recherche
         expect(Task.title_search('title')).to include(task)
         expect(Task.title_search('task2')).not_to include(second_task)
-        expect(Task.title_search('task').count).to eq 1
+        expect(Task.title_search('task').count).to eq 3
         expect(page).to have_content 'title'
       end
     end
@@ -78,15 +83,7 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
         select 'unstarted', from: "search_status"
         click_on "search"
         expect(page).to have_content 'title'
-        # select 'Low', from: "search_priority"
-        # click_on "search"
-        # expect(page).to have_content 'title'
-
-        # select 'unstarted', from: "search_status"
-        # click_on "search"
-        # expect(page).to have_content 'title'
-
-        # click_on "sort by end deadline"
+       
 
       end
     end
@@ -97,7 +94,7 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
         expect(page).to have_content 'title' 
       end
       
-    # end
+    end
     
     context "Title une recherche floue du titre et d'une recherche d'état" do
       it "Affinez les tâches qui incluent des mots clés de recherche dans le Title et correspondent exactement à l'état" do
@@ -112,22 +109,11 @@ RSpec.describe 'Fonction de gestion des tâches', type: :system do
 
     context "Search by label" do
       
-
       it "Return a list with label search " do
-        FactoryBot.create(:second_user)
-        visit new_session_path
-        fill_in 'session[email]', with: 'admin1@gmail.com'
-        fill_in 'session[password]', with: 'password'
-        click_button 'signin'
-        
-        FactoryBot.create(:task)
-        FactoryBot.create(:second_task)
-        FactoryBot.create(:label)
-        FactoryBot.create(:labeling)
-
+    
         visit tasks_path
-        sleep 5
         select "title", from: "search_label"
+        click_on "search"
         expect(page).to have_content 'title' 
       end
       
